@@ -18,21 +18,21 @@ TELEGRAM_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 MAIN_STATE = range(1)
 
 # Lista dozwolonych użytkowników (ID użytkowników)
-ALLOWED_USERS = {6639144618}  # Przykładowe ID użytkowników
+ALLOWED_USERS = {5385398534, 1593893854, 9429581495}  # Przykładowe ID użytkowników
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     user_id = update.message.from_user.id
     if user_id in ALLOWED_USERS:
         await update.message.reply_text(
-        "Dostępne komendy:\n"
-        "/start - Rozpocznij konwersację i zaloguj się\n"
-        "/gpt3 - Wybierz model GPT-3.5\n"
-        "/gpt4 - Wybierz model GPT-4\n"
-        "/gpt4o - Wybierz model GPT-4o\n"
-        "/dalle - Wybierz DALL-E\n"
-        "/generate_image - Generuj obraz na podstawie opisu\n"
-        "/help - Wyświetl listę dostępnych komend\n"
-    )
+            "Dostępne komendy:\n"
+            "/start - Rozpocznij konwersację i zaloguj się\n"
+            "/gpt3 - Wybierz model GPT-3.5\n"
+            "/gpt4 - Wybierz model GPT-4\n"
+            "/gpt4o - Wybierz model GPT-4o\n"
+            "/dalle - Wybierz DALL-E\n"
+            "/generate_image - Generuj obraz na podstawie opisu\n"
+            "/help - Wyświetl listę dostępnych komend\n"
+        )
         return MAIN_STATE
     else:
         await update.message.reply_text('Nie masz uprawnień do korzystania z tego bota.')
@@ -100,7 +100,7 @@ async def generate_image(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             return
         try:
             response = client.images.generate(prompt=prompt, n=1, size="1024x1024")
-            image_url = response['data'][0]['url']
+            image_url = response.data[0].url
             await update.message.reply_photo(photo=image_url)
         except Exception as e:
             await update.message.reply_text(f'Wystąpił błąd: {str(e)}')
